@@ -48,15 +48,12 @@ export default {
         {
           title: "Experience",
           img: "https://t4.ftcdn.net/jpg/00/85/59/11/240_F_85591170_Rp0fVWXIPBygpGKat9VAjRMhoBFuy6bG.jpg",
+          color: "white",
         },
         {
           title: "Skills",
           img: "https://t4.ftcdn.net/jpg/02/25/08/49/240_F_225084966_hhswkk9GgkAKcr2p1n69aaiI1jETbZO9.jpg",
-        },
-        {
-          title: "Projects",
-          img: "https://t3.ftcdn.net/jpg/01/00/57/74/240_F_100577412_CYRqYeKrZggtX3SwoJ5sPmyhnNIJelvg.jpg",
-          color: "black",
+          color: "white",
         },
       ],
       transparent: "rgba(255, 255, 255, 0)",
