@@ -37,12 +37,12 @@
         <Nuxt />
       </v-container>
     </v-main>
-    <tour-page :steps="steps" />
+    <v-tour name="explanatoryTour" :steps="steps" :callbacks="callbacks" />
   </v-app>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import {mapActions, mapState} from "vuex";
 import CollapseItem from "../components/SideBar/Content/Collapse";
 import AboutPage from "../components/SideBar/Content/About";
 import ExperienceItem from "../components/SideBar/Content/Experience";
@@ -50,12 +50,12 @@ import SkillsItem from "../components/SideBar/Content/Skills";
 import HomeItem from "../components/SideBar/Content/Home";
 import MenuSettings from "../components/Layout/Settings/Menu";
 import ThemeChanger from "/Mixins/ThemeChanger";
-import TourPage from "../components/Tours/Tour";
+import Vue from "vue";
+
 export default {
   name: "PrimaryLayout",
   mixins: [ThemeChanger],
   components: {
-    TourPage,
     MenuSettings,
     HomeItem,
     SkillsItem,
@@ -69,6 +69,7 @@ export default {
       expand: (state) => state.Stores.Layout.expand,
       themeColor: (state) => state.Stores.Theme.themeColor,
       colors: (state) => state.Stores.Theme.colors,
+      previousUser: (state) => state.Stores.Theme.previousUser,
     }),
     title() {
       return !this.$vuetify.breakpoint.smAndDown
@@ -78,6 +79,12 @@ export default {
   },
   async mounted() {
     await this.setLocalTheme();
+    Vue.nextTick(() => {
+      if (!this.previousUser) {
+        this.$tours.explanatoryTour.start();
+        this.setPreviousUser(true);
+      }
+    });
   },
   data() {
     return {
@@ -107,11 +114,24 @@ export default {
             }),
         },
       ],
+      callbacks: {
+        onFinish: this.myCustomFinishCallBack,
+        onSkip: this.myCustomSkipCallBack,
+      },
     };
   },
   methods: {
+    ...mapActions({
+      setPreviousUser: "Stores/Theme/setPreviousUser",
+    }),
     updateMenu() {
       this.showMenu = !this.showMenu;
+    },
+    myCustomFinishCallBack() {
+      this.setPreviousUser(true);
+    },
+    myCustomSkipCallBack() {
+      this.setPreviousUser(true);
     },
   },
 };
